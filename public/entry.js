@@ -1,1 +1,1 @@
-w=a.width,h=a.height,c.fillRect(w/2-8,h/2-8,16,16);
+for(u=24,uu=u*u,b.style.background="#000",c.fillStyle="#fff",c.translate((a.width-uu)/2,(a.height-uu)/2),m=u=>(f=(u+=1831565813))=>(f=Math.imul(f^f>>>15,1|f),(((f^=f+Math.imul(f^f>>>7,61|f))^f>>>14)>>>0)/4294967296),r=m(16711680),p=[];p.length<uu;)p.push(r()>.2);for(y=0;y<uu;){for(x=0;x<u;)p[y+x]&&c.fillRect(x*u,y,u-1,u-1),x+=1;y+=u}
