@@ -1,23 +1,23 @@
 {
-  "name": "detached",
+  "name": "no-one-cares",
   "version": "0.0.1",
-  "description": "a logo that is falling apart",
+  "description": "No one cares either.",
   "main": "src/index.js",
   "scripts": {
     "start": "node watch.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Quinten/detached.git"
+    "url": "git+https://github.com/Quinten/no-one-cares.git"
   },
   "author": "Quinten Clause",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Quinten/detached/issues"
+    "url": "https://github.com/Quinten/no-one-cares/issues"
   },
-  "homepage": "https://github.com/Quinten/detached#readme",
+  "homepage": "https://github.com/Quinten/no-one-cares#readme",
   "devDependencies": {},
   "dependencies": {
-    "terser": "^4.8.0"
+    "terser": "^5.7.0"
   }
 }
