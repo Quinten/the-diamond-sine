@@ -1,7 +1,11 @@
+M = Math;
+P = M.PI;
+h = location;
 u = 24;
 U = u * u;
 v = u / 2;
-q = Math.sqrt(v * v * 2);
+q = M.sqrt(v * v * 2);
+Q = - q / 2;
 
 // colors
 b.style.background = '#334';
@@ -10,11 +14,10 @@ c.fillStyle = '#eff';
 // centering
 c.translate((a.width - U) / 2, (a.height - U) / 2);
 
-P = Math.PI;
 T = c.fillRect.bind(c);
 R = c.rotate.bind(c);
 
-// sprites
+// graphics
 g = [
 
     // 0 nothing
@@ -27,23 +30,22 @@ g = [
     _ => [c.beginPath(), c.arc(0, 0, v - 1, 0, P*2), c.fill()],
 
     // 3 daimond
-    _ => [R(P/4), T(-q/2, -q/2, q, q)],
+    _ => [R(P/4), T(Q, Q, q, q)],
 
     // 4 player
-    _ => [R(P/4), T(-q/2, -q/6, q, q/3), R(P/2), T(-q/2, -q/6, q, q/3)]
+    _ => [R(P/4), T(Q, Q/3, q, q/3), R(P/2), T(Q, Q/3, q, q/3)]
 ];
 
 // pseudo random number generator
 // https://stackoverflow.com/questions/521295/seeding-the-random-number-generator-in-javascript
-m = i => (x = Math.sin(i++) * 10000) => x * x % 1;
+m = i => (x = M.sin(i++) * 10000) => x * x % 1;
 
-$ = Number(location.hash.slice(1)) || 1; // current level
+$ = Number(h.hash.slice(1)) || 1; // current level
 
 // (re)build level
 z = _ => {
-    location.hash = $;
     // reset prng
-    r = m($);
+    r = m(h.hash = $);
     // start position
     s = r() * U | 0;
     // grid
@@ -122,12 +124,12 @@ f = _ => {
         }
         y += u;
     }
+
     // player crushed, game over
-    //E(4, 'RIP', 0);
-    // no more diamonds, level complete
-    //E(3, 'LVL ' + $ + ' OK', 1);
     if (p.indexOf(4) == -1) {
         E((e, i) => ((i < H && r() > .6)) ? 0 : e, 0);
+
+    // no more diamonds, level complete
     } else if (p.indexOf(3) == -1) {
         E(e => (r() * 3 | 0) || 4, 1);
     }
