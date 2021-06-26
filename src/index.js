@@ -7,13 +7,6 @@ v = u / 2;
 q = M.sqrt(v * v * 2);
 Q = - q / 2;
 
-// colors
-b.style.background = '#334';
-c.fillStyle = '#eff';
-
-// centering
-c.translate((a.width - U) / 2, (a.height - U) / 2);
-
 T = c.fillRect.bind(c);
 R = c.rotate.bind(c);
 
@@ -67,18 +60,6 @@ z = _ => {
 };
 
 // end of level check method
-/*
-E = (g, G, l) => {
-    if (p.indexOf(g) == -1) {
-        setTimeout(_ => {
-            alert(G);
-            $ = $ + l;
-            z();
-        }, 5);
-    }
-};
-*/
-
 H = 0;
 E = (C, l) => {
     setTimeout(_ => {
@@ -96,7 +77,7 @@ E = (C, l) => {
 
 // main loop
 f = _ => {
-    c.clearRect(-1, -1, U + 2, U + 2);
+    T(0, 0, a.width, a.height);
     y = 0;
     while (y < U) {
         x = 0;
@@ -117,7 +98,11 @@ f = _ => {
             }
             // draw graphics
             c.save();
-            c.translate(x * u + u / 2, y + u / 2);
+            c.fillStyle = 'snow';
+            c.translate(
+                ((a.width - U) / 2) + (x * u + u / 2),
+                ((a.height - U) / 2) + (y + u / 2)
+            );
             g[p[y + x]]();
             c.restore();
             x += 1;
