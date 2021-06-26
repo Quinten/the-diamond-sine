@@ -33,47 +33,47 @@ g = [
 // https://stackoverflow.com/questions/521295/seeding-the-random-number-generator-in-javascript
 m = i => (x = M.sin(i++) * 10000) => x * x % 1;
 
-$ = Number(h.hash.slice(1)) || 1; // current level
+// parse the current level from the address bar hash
+// #1, #2, #3, ...
+// You can also do decimal levels like #0.000001
+// falsy or NaN is replaced by 1
+$ = Number(h.hash.slice(1)) || 1;
 
 // (re)build level
 z = _ => {
     // reset prng
     r = m(h.hash = $);
-    // start position
-    s = r() * U | 0;
     // grid
     p = [];
     while (p.length < U) {
         p.push(
-            // player
-            (p.length == s) ? 4 : // player
-                // always dirt above player
-                ((p.length == s - u) ||
-                    // less dirt in higher levels
-                    (r() > .1 + $ * .08) ? 1 :
-                    // other stuff
-                    r() * 4 | 0
-                )
+            // less dirt in higher levels
+            (r() > .1 + $ * .08) ? 1 :
+            // other stuff
+            r() * 4 | 0
         );
     }
+    // player start position
+    s = r() * U | 0;
+    p[s] = 4;
+    // always dirt above player
+    // otherwise infinite killing is possible
+    p[(s - u + U) % U] = 1;
+    // render
     f();
 };
 
-// end of level check method
+// end of level animation/check
 H = 0;
-E = (C, l) => {
-    setTimeout(_ => {
-        if (H >= U) {
-            H = 0;
-            $ = $ + l;
-            z();
-        } else {
-            p = p.map(C);
-            H = H + u;
-            f();
-        }
-    }, u);
-};
+E = (C, l) => setTimeout(_ => {
+    if (H >= U) {
+        H = 0;
+        z($ = $ + l);
+    } else {
+        p = p.map(C);
+        f(H = H + u);
+    }
+}, u);
 
 // main loop
 f = _ => {
