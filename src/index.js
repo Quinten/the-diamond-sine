@@ -49,7 +49,17 @@ z = _ => {
     // grid
     p = [];
     while (p.length < uu) {
-        p.push((p.length == s) ? 4 : ((r() > .4) ? 1 : r() * 4 | 0));
+        p.push(
+            // player
+            (p.length == s) ? 4 : // player
+                // always dirt above player
+                ((p.length == s - u) ||
+                    // less dirt in higher levels
+                    (r() > .1 + $ * .08) ? 1 :
+                    // other stuff
+                    r() * 4 | 0
+                )
+        );
     }
     f();
 };
