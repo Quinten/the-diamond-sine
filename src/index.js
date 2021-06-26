@@ -46,16 +46,18 @@ m = i => (t = i += 0x6D2B79F5) => [
 // This one is actually shorter
 m = i => (x = Math.sin(i++) * 10000) => x * x % 1;
 
+$ = 1; // current level
+
 z = _ => {
     // reset prng
-    r = m(1);
+    r = m($);
     // start position
     s = r() * uu | 0;
     // grid
     p = [];
     while (p.length < uu) {
         //p.push(r() * g.length | 0);
-        p.push((p.length == s) ? 4 : r() * 4 | 0);
+        p.push((p.length == s) ? 4 : ((r() > .4) ? 1 : r() * 4 | 0));
     }
 }
 z();
@@ -66,6 +68,21 @@ f = _ => {
     while (y < uu) {
         x = 0;
         while (x < u) {
+            // drop boulders
+            o = y + x;
+            while (p[y + x] == 2 && p[o] == 2 && (p[o + u] == 0 || p[o + u] == 2)) {
+                if (p[o + u] == 0) {
+                    p[y + x] = 0;
+                }
+                o = o + u;
+                p[o] = 2;
+                // crush player
+                // and diamonds (otherwise unsolvable)
+                if (p[o + u] == 4 || p[o + u] == 3) {
+                    p[o + u] = 0;
+                }
+            }
+            // draw graphics
             c.save();
             c.translate(x * u + u / 2, y + u / 2);
             g[p[y + x]]();
@@ -74,9 +91,22 @@ f = _ => {
         }
         y += u;
     }
+    // player crushed, game over
     if (p.indexOf(4) === -1) {
-        z();
-        f();
+        setTimeout(_ => {
+            alert('ouch');
+            z();
+            f();
+        }, 40);
+    }
+    // no more diamonds, level complete
+    if (p.indexOf(3) === -1) {
+        setTimeout(_ => {
+            alert('Level ' + $ + ' cleared!');
+            $++;
+            z();
+            f();
+        }, 40);
     }
 };
 f();
@@ -88,7 +118,10 @@ onkeyup = e => {
 
     w = [-1, -1, u, 0, 1, -1, -u, 1, u, -u][e.which%32%17];
     p[s] = 0;
-    s = (s + w < 0) ? s + w + uu : ((s + w) % uu);
-    p[s] = (p[s] == 2) ? 2 : 4;
-    f();
+    n = (s + w < 0) ? s + w + uu : ((s + w) % uu);
+    if (p[n] !== 2) {
+        s = n;
+        p[s] = (p[s] == 2) ? 2 : 4;
+        f();
+    }
 };
