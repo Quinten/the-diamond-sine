@@ -37,10 +37,11 @@ g = [
 // https://stackoverflow.com/questions/521295/seeding-the-random-number-generator-in-javascript
 m = i => (x = Math.sin(i++) * 10000) => x * x % 1;
 
-$ = 1; // current level
+$ = Number(location.hash.slice(1)) || 1; // current level
 
 // (re)build level
 z = _ => {
+    location.hash = $;
     // reset prng
     r = m($);
     // start position
@@ -64,6 +65,7 @@ z = _ => {
 };
 
 // end of level check method
+/*
 E = (g, G, l) => {
     if (p.indexOf(g) == -1) {
         setTimeout(_ => {
@@ -72,6 +74,22 @@ E = (g, G, l) => {
             z();
         }, 5);
     }
+};
+*/
+
+H = 0;
+E = (C, l) => {
+    setTimeout(_ => {
+        if (H >= U) {
+            H = 0;
+            $ = $ + l;
+            z();
+        } else {
+            p = p.map(C);
+            H = H + u;
+            f();
+        }
+    }, u);
 };
 
 // main loop
@@ -105,9 +123,14 @@ f = _ => {
         y += u;
     }
     // player crushed, game over
-    E(4, 'RIP', 0);
+    //E(4, 'RIP', 0);
     // no more diamonds, level complete
-    E(3, 'LVL ' + $ + ' OK', 1);
+    //E(3, 'LVL ' + $ + ' OK', 1);
+    if (p.indexOf(4) == -1) {
+        E((e, i) => ((i < H && r() > .6)) ? 0 : e, 0);
+    } else if (p.indexOf(3) == -1) {
+        E(e => (r() * 3 | 0) || 4, 1);
+    }
 };
 
 z(); // kick off
