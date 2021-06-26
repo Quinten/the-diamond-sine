@@ -5,8 +5,8 @@ vv = v * v;
 q = Math.sqrt(vv * 2);
 
 // colors
-b.style.background = '#000';
-c.fillStyle = '#fff';
+b.style.background = '#334';
+c.fillStyle = '#eff';
 
 // centering
 c.translate((a.width - uu) / 2, (a.height - uu) / 2);
@@ -40,6 +40,7 @@ m = i => (x = Math.sin(i++) * 10000) => x * x % 1;
 
 $ = 1; // current level
 
+// (re)build level
 z = _ => {
     // reset prng
     r = m($);
@@ -48,12 +49,23 @@ z = _ => {
     // grid
     p = [];
     while (p.length < uu) {
-        //p.push(r() * g.length | 0);
         p.push((p.length == s) ? 4 : ((r() > .4) ? 1 : r() * 4 | 0));
     }
     f();
-}
+};
 
+// end of level check method
+E = (g, G, l) => {
+    if (p.indexOf(g) == -1) {
+        setTimeout(_ => {
+            alert(G);
+            $ = $ + l;
+            z();
+        }, 5);
+    }
+};
+
+// main loop
 f = _ => {
     c.clearRect(-1, -1, uu + 2, uu + 2);
     y = 0;
@@ -84,35 +96,24 @@ f = _ => {
         y += u;
     }
     // player crushed, game over
-    if (p.indexOf(4) === -1) {
-        setTimeout(_ => {
-            alert('ouch');
-            z();
-        }, 40);
-    }
+    E(4, 'RIP', 0);
     // no more diamonds, level complete
-    if (p.indexOf(3) === -1) {
-        setTimeout(_ => {
-            alert('Lvl ' + $ + ' ok');
-            $++;
-            z();
-        }, 40);
-    }
+    E(3, 'LVL ' + $ + ' OK', 1);
 };
 
 z(); // kick off
 
-
 onkeyup = e => {
+    // movement from keycode
     // https://xem.github.io/articles/jsgamesinputs.html
     //console.log('lld*rlurdu'[e.which%32%17]);
     w = [-1, -1, u, 0, 1, -1, -u, 1, u, -u][e.which%32%17];
 
     // next position
-    //n = (s + w < 0) ? s + w + uu : ((s + w < (s / w | 0)) ? s + w + u : ((s + w + uu) % uu));
-    n = (s + w + uu) % uu;
-
-    //n = (s + w < 0) ? s + w + uu : (s + w + uu) % uu;
+    n = s + w;
+    // wrapping player around the playing field
+    k = ((s / u | 0) - (n / u | 0)) * u * (w * w % u);
+    n = (n + uu + k) % uu;
 
     // step on certain tiles
     if (!!(p[n] % 2) || p[n] == 0) {
