@@ -34,16 +34,8 @@ g = [
     _ => [R(P/4), V(-q/2, -q/6, q, q/3), R(P/2), V(-q/2, -q/6, q, q/3)]
 ];
 
-// mulberry 32 seeded pseudo random number generator
+// pseudo random number generator
 // https://stackoverflow.com/questions/521295/seeding-the-random-number-generator-in-javascript
-/*
-m = i => (t = i += 0x6D2B79F5) => [
-    t = Math.imul(t ^ t >>> 15, t | 1),
-    t ^= t + Math.imul(t ^ t >>> 7, t | 61),
-    ((t ^ t >>> 14) >>> 0) / 4294967296
-][2];
-*/
-// This one is actually shorter
 m = i => (x = Math.sin(i++) * 10000) => x * x % 1;
 
 $ = 1; // current level
@@ -59,11 +51,11 @@ z = _ => {
         //p.push(r() * g.length | 0);
         p.push((p.length == s) ? 4 : ((r() > .4) ? 1 : r() * 4 | 0));
     }
+    f();
 }
-z();
 
 f = _ => {
-    c.clearRect(0, 0, uu, uu);
+    c.clearRect(-1, -1, uu + 2, uu + 2);
     y = 0;
     while (y < uu) {
         x = 0;
@@ -96,32 +88,37 @@ f = _ => {
         setTimeout(_ => {
             alert('ouch');
             z();
-            f();
         }, 40);
     }
     // no more diamonds, level complete
     if (p.indexOf(3) === -1) {
         setTimeout(_ => {
-            alert('Level ' + $ + ' cleared!');
+            alert('Lvl ' + $ + ' ok');
             $++;
             z();
-            f();
         }, 40);
     }
 };
-f();
+
+z(); // kick off
 
 
 onkeyup = e => {
     // https://xem.github.io/articles/jsgamesinputs.html
     //console.log('lld*rlurdu'[e.which%32%17]);
-
     w = [-1, -1, u, 0, 1, -1, -u, 1, u, -u][e.which%32%17];
-    p[s] = 0;
-    n = (s + w < 0) ? s + w + uu : ((s + w) % uu);
-    if (p[n] !== 2) {
+
+    // next position
+    //n = (s + w < 0) ? s + w + uu : ((s + w < (s / w | 0)) ? s + w + u : ((s + w + uu) % uu));
+    n = (s + w + uu) % uu;
+
+    //n = (s + w < 0) ? s + w + uu : (s + w + uu) % uu;
+
+    // step on certain tiles
+    if (!!(p[n] % 2) || p[n] == 0) {
+        p[s] = 0;
         s = n;
-        p[s] = (p[s] == 2) ? 2 : 4;
+        p[s] = 4;
         f();
     }
 };
