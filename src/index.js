@@ -111,14 +111,21 @@ f = _ => {
         y += u;
     }
 
+    /*
     // player crushed, game over
     if (p.indexOf(4) == -1) {
-        E((e, i) => ((i < H && r() > .6)) ? 0 : e, 0);
+        E((e, i) => (i < H && r() > .6) ? 0 : e, 0);
 
     // no more diamonds, level complete
     } else if (p.indexOf(3) == -1) {
         E(e => (r() * 3 | 0) || 4, 1);
     }
+    */
+
+    [
+        (e, i) => (i < H && r() > .6) ? 0 : e,
+        e => (r() * 3 | 0) || 4
+    ].some((e, i) => p.indexOf(4 - i) == -1 && E(e, i));
 };
 
 z(); // kick off
