@@ -35,7 +35,8 @@ m = i => (x = M.sin(i++) * 10000) => x * x % 1;
 
 // parse the current level from the address bar hash
 // #1, #2, #3, ...
-// You can also do decimal levels like #0.000001
+// You can also do decimal levels like #0.000001 or even negative ones like #-0.9999
+// levels lower than -1 have no daimonds so they solve themselves
 // falsy or NaN is replaced by 1
 $ = Number(h.hash.slice(1)) || 1;
 
