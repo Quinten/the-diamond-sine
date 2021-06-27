@@ -20,13 +20,13 @@ g = [
     _ => T(-v, -v, u - 1, u - 1),
 
     // 2 boulder
-    _ => [c.beginPath(), c.arc(0, 0, v - 1, 0, P*2), c.fill()],
+    _ => c.fill(c.arc(0, 0, v - 1, 0, P*2, c.beginPath())),
 
     // 3 daimond
-    _ => [R(P/4), T(Q, Q, q, q)],
+    _ => T(Q, Q, q, q, R(P/4)),
 
     // 4 player
-    _ => [R(P/4), T(Q, Q/3, q, q/3), R(P/2), T(Q, Q/3, q, q/3)]
+    _ => T(Q, Q/3, q, q/3, T(Q, Q/3, q, q/3, R(P/4)), R(P/2))
 ];
 
 // pseudo random number generator
@@ -121,11 +121,11 @@ f = _ => {
         E(e => (r() * 3 | 0) || 4, 1);
     }
     */
-
+    // same but 3 bytes shorter
     [
         (e, i) => (i < H && r() > .6) ? 0 : e,
         e => (r() * 3 | 0) || 4
-    ].some((e, i) => p.indexOf(4 - i) == -1 && E(e, i));
+    ].some((e, i) => !p.includes(4 - i) && E(e, i));
 };
 
 z(); // kick off
