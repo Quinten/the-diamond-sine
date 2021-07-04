@@ -8,3 +8,5 @@ A 1 kilobyte remake of the classic arcade game Boulder Dash.
 - Current level is displayed as a hash in the address bar. Feel free to skip one you don't like, just type a number.
 
 Levels 1 to 10 increase slightly in difficulty. But there are many more level layouts because of the seeded number generator. You can even try decimal or negative numbers, although levels lower than -1 won't have any diamonds in them and they solve themselves.
+
+Made for https://js1024.fun/ 2021 edition
